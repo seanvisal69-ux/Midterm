@@ -20,8 +20,8 @@
                             Account
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/G19BCSY3A/pages/?page=login">Login</a></li>
-                            <li><a class="dropdown-item" href="/G19BCSY3A/pages/?page=Register">Register</a></li>
+                            <li><a class="dropdown-item" href="/G19BCSY3A/?page=login">Login</a></li>
+                            <li><a class="dropdown-item" href="/G19BCSY3A/?page=register">Register</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
