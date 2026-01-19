@@ -19,11 +19,7 @@
             $confirm_passwdErr = 'passwords do not match!';
         }
     }
-
 ?>
-
-
-
     <form method="post" action="./?page=register" class="col-md-8 col-lg-6 mx-auto">
         <h3>Register page</h3>
         <div class="mb-3">
