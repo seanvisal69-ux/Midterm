@@ -1,6 +1,8 @@
 <?php
+require_once './init/db.init.php';
 include'./includes/header.inc.php';
 include'./includes/navbar.inc.php';
+
 
 $available_pages = ['login', 'register'];
 
