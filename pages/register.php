@@ -1,11 +1,12 @@
 <?php
+
+use LDAP\Result;
     $nameErr = $usernameErr = $passwdErr = $confirm_passwdErr = '';
     $name = $username = '';
     if(isset($_POST['name'], $_POST['username'], $_POST['passwd'], $_POST['confirm_passwd'])){
-        $name = $_POST['name'];
-        $username = $_POST['username'];
-        $passwd = $_POST['passwd'];
-        $confirm_passwd = $_POST['confirm_passwd'];
+        $name = trim($_POST['name']);
+        $username = trim($_POST['username']);
+        $passwd = trim($_POST['passwd']);
         if(empty($name)){
             $nameErr = 'please input name!';
         }
@@ -15,10 +16,30 @@
         if(empty($passwd)){
             $passwdErr = 'please input password!';
         }
-        if($passwd !== $confirm_passwd){
+        if(strlen($passwd) < 6|| strlen($passwd) > 64){
+            $passwdErr = 'password must be at least 6 characters!';
+        }
+        if($_POST['confirm_passwd'] !== $passwd){
             $confirm_passwdErr = 'passwords do not match!';
         }
+        
+        if(usernameExists($username )){
+            $usernameErr = 'Please choose another username!';
+        }
+        if(empty($nameErr)&& empty($usernameErr)&& empty($passwdErr)){
+            if(registerUser($name, $username, $passwd)){
+                echo '<div class="alert alert-success" role="alert">
+                Registration successful! You can now <a href="./?page=login" class="alert-link">login</a>.
+              </div>';
+              $name = $username = '';
+            }else{
+                echo '<div class="alert alert-danger" role="alert">
+                Registration failed! Please try again later.
+              </div>';
+        }
     }
+}
+
 ?>
     <form method="post" action="./?page=register" class="col-md-8 col-lg-6 mx-auto">
         <h3>Register page</h3>
@@ -50,6 +71,7 @@
             <div class="invalid-feedback">
                 <?php echo $confirm_passwdErr ?>
         </div>
+
         <button type="submit" class="btn btn-primary">Submit</button>
+
     </form>
-    
