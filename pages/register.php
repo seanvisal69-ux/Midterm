@@ -7,6 +7,7 @@ use LDAP\Result;
         $name = trim($_POST['name']);
         $username = trim($_POST['username']);
         $passwd = trim($_POST['passwd']);
+        $confirm = trim($_POST['confirm_passwd']);
         if(empty($name)){
             $nameErr = 'please input name!';
         }
