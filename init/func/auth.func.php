@@ -59,3 +59,11 @@ function loggedInUser()
 
     }
 }
+
+function isAdmin(){
+    $user = loggedInUser();
+    if ($user && $user->Level == 'admin'){
+        return true;
+    }
+    return false;
+}

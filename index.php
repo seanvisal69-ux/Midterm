@@ -6,27 +6,27 @@ include './includes/navbar.inc.php';
 
 
 
-$available_pages = ['login', 'register', 'dashboard', 'logout'];
-$logged_in_pages = ['dashboard'];
+$available_pages = ['login', 'register', 'dashboard', 'logout', 'profile'];
+$logged_in_pages = ['dashboard', 'logout', 'profile'];
 $non_logged_in_pages = ['login', 'register'];
 
 $page = '';
-if(isset($_GET['page'])){
+if (isset($_GET['page'])) {
     $page = $_GET['page'];
 }
-if(in_array($page,$logged_in_pages) && empty($user)){
+if (in_array($page, $logged_in_pages) && empty($user)) {
     header('Location: ./?page=login');
 }
 
-if(in_array($page,$non_logged_in_pages) && !empty($user)){
+if (in_array($page, $non_logged_in_pages) && !empty($user)) {
     header('Location: ./?page=dashboard');
 }
 
-if(in_array($page,$available_pages)){
+if (in_array($page, $available_pages)) {
     include './pages/' . $page . '.php';
-}else{
+} else {
     header('Location: ./?page=dashboard');
 }
 
-include'./includes/footer.inc.php';
+include './includes/footer.inc.php';
 ?>
