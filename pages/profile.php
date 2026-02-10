@@ -35,11 +35,11 @@ if (isset($_POST['changePasswd'], $_POST['oldPasswd'], $_POST['newPasswd'], $_PO
 
 <div class="row">
     <div class="col-6">
-        <form method="post" action="./?page=profile">
+        <form method="post" action="./?page=profile" enctype="multipart/form-data">
             <div class="d-flex justify-content-center">
                 <input name="photo" type="file" id="profileUpload" hidden>
-                <label role="buttom" for="profileUpload">
-                    <img src="./assets/image/images.png" class="rounded">
+                <label role="button" for="profileUpload">
+                    <img src="./assets/images/emptyuser.png" class="rounded">
                 </label>
             </div>
             <div class="d-flex justify-content-center">
@@ -48,32 +48,31 @@ if (isset($_POST['changePasswd'], $_POST['oldPasswd'], $_POST['newPasswd'], $_PO
             </div>
         </form>
     </div>
-</div>
 
-<div class="row">
     <div class="col-6">
-        <form method="post" action="./?page=profile" class="col-nd-8 col-lg-6 mx-auto">
-            <h3>Chanae Password</h3>
+        <form method="post" action="./?page=profile" class="col-md-8 col-lg-6 mx-auto">
+            <h3>Change Password</h3>
             <div class="mb-3">
                 <label class="form-label">Old Password</label>
-                <input value="<?php echo $oldPasswd ?>" name="oldPasswd" type="password"
-                    class="form-control <?php echo empty($oldPasswdErr) ? '' : 'is-invalid' ?>">
+                <input value="<?php echo $oldPasswd ?>" name="oldPasswd" type="password" class="form-control 
+                <?php echo empty($oldPasswdErr) ? '' : 'is-invalid' ?>">
                 <div class="invalid-feedback">
                     <?php echo $oldPasswdErr ?>
                 </div>
             </div>
             <div class="mb-3">
-                <label class="form-label">New Password</label> <input name="newPasswd" type="password"
-                    class="form-control <?php echo empty($newPasswdErr) ? '' : 'is-invalid' ?>">
+                <label class="form-label">New Password</label>
+                <input name="newPasswd" type="password" class="form-control 
+                <?php echo empty($newPasswdErr) ? '' : 'is-invalid' ?>">
                 <div class="invalid-feedback">
                     <?php echo $newPasswdErr ?>
                 </div>
             </div>
             <div class="mb-3">
                 <label class="form-label">Confirm New Password</label>
-                <input name="confirmNevPasswd" type="password" class="form-control">
+                <input name="confirmNewPasswd" type="password" class="form-control">
             </div>
-            <button type="submit" name="changePasswd" class="btn btn-primary">Change Passwords/button>
+            <button type="submit" name="changePasswd" class="btn btn-primary">Change Password</button>
         </form>
     </div>
 </div>
