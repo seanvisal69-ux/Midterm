@@ -1,37 +1,94 @@
 <?php
-$oldPasswd = $newPasswd = $confirmPasswd = '';
+$oldPasswd = $newPasswd = $confirmNewPasswd = '';
 $oldPasswdErr = $newPasswdErr = '';
+$response = null;
 
-if (isset($_POST['changePasswd'], $_POST['oldPasswd'], $_POST['newPasswd'], $_POST['confirmPasswd'])) {
+$photo = empty(getUserImage($_SESSION['user_id'])) ? 'image.png' : getUserImage($_SESSION['user_id']);
+
+if (isset($_POST['changePasswd'], $_POST['oldPasswd'], $_POST['newPasswd'], $_POST['confirmNewPasswd'])) {
     $oldPasswd = trim($_POST['oldPasswd']);
     $newPasswd = trim($_POST['newPasswd']);
-    $confirmPasswd = trim($_POST['confirmPasswd']);
-
+    $confirmNewPasswd = trim($_POST['confirmNewPasswd']);
     if (empty($oldPasswd)) {
-        $oldPasswdErr = 'Please input old password!';
+        $oldPasswdErr = 'please input your old password';
     }
     if (empty($newPasswd)) {
-        $newPasswdErr = 'Please input new password!';
+        $newPasswdErr = 'please input your new password';
     }
-    if ($newPasswd !== $confirmPasswd) {
-        $newPasswdErr = 'password do not match!';
-    } else {
-        if (!isUserHasPassword($oldPasswd)) {
-            $oldPasswdErr = 'password is incorrect!';
-        }
+    if ($newPasswd !== $confirmNewPasswd) {
+        $newPasswdErr = 'password does not match';
+    }
+    if (!isUserHasPassword($oldPasswd)) {
+        $oldPasswdErr = 'password is incorrect';
     }
     if (empty($oldPasswdErr) && empty($newPasswdErr)) {
         if (setUserNewPassword($newPasswd)) {
-            header('Location: ./?page=login');
+            header('Location: ./?page=logout');
         } else {
             echo '<div class="alert alert-danger" role="alert">
-                Failed to change password! Please try again later.
-              </div>';
+                try again.
+                </div>';
         }
+    }
+}
+
+if (isset($_POST['deletePhoto'])) {
+    $photoPath = './assets/images/' . $photo;
+    if (file_exists($photoPath) && $photo !== 'image.png') {
+        unlink($photoPath);
+        $response = deleteUserImage();
+        if ($response === true) {
+            $photo = 'image.png';
+            echo '<div class="alert alert-danger" role="alert">
+                Delete Image Success.
+           </div>';
+        }
+    }
+}
+
+
+if (isset($_POST['uploadPhoto']) && isset($_FILES['photo'])) {
+    $photo = $_FILES['photo']['name'];
+    $photoTmp = $_FILES['photo']['tmp_name'];
+    $photoSize = $_FILES['photo']['size'];
+    $photoError = $_FILES['photo']['error'];
+    $photoType = $_FILES['photo']['type'];
+    $fileExt = explode('.', $photo);
+    $fileActualExt = strtolower(end($fileExt));
+    $allowed = array('jpg', 'jpeg', 'png');
+    if (in_array($fileActualExt, $allowed)) {
+        if ($photoError === 0) {
+            if ($photoSize < 10000000000) {
+                $response = insertImage($_FILES);
+                if ($response === true) {
+                    echo '<div class="alert alert-success" role="alert">
+                             Upload Image Success.
+                             </div>';
+                } else {
+                    echo '<div class="alert alert-danger" role="alert">
+                             Upload Image Unsuccess.
+                             </div>';
+                }
+            } else {
+                echo '<div class="alert alert-danger" role="alert">
+                         Your file is too big!
+                         </div>';
+            }
+        } else {
+            echo '<div class="alert alert-danger" role="alert">
+                     There was an error uploading your file!
+                     </div>';
+        }
+    } else {
+        echo '<div class="alert alert-danger" role="alert">
+                 You cannot upload files of this type!
+                 </div>';
     }
 
 }
+
 ?>
+
 
 <div class="row">
     <div class="col-6">
@@ -39,7 +96,7 @@ if (isset($_POST['changePasswd'], $_POST['oldPasswd'], $_POST['newPasswd'], $_PO
             <div class="d-flex justify-content-center">
                 <input name="photo" type="file" id="profileUpload" hidden>
                 <label role="button" for="profileUpload">
-                    <img src="./assets/images/emptyuser.png" class="rounded">
+                    <img src="./assets/images/emptyuser.png" class="rounded" style="width: 200px; height: 200px; object-fit: cover;" alt="Profile Picture">
                 </label>
             </div>
             <div class="d-flex justify-content-center">
@@ -76,3 +133,16 @@ if (isset($_POST['changePasswd'], $_POST['oldPasswd'], $_POST['newPasswd'], $_PO
         </form>
     </div>
 </div>
+
+<script>
+    document.getElementById('profileUpload').addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                document.querySelector('label img').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
