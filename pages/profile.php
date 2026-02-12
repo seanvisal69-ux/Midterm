@@ -3,7 +3,7 @@ $oldPasswd = $newPasswd = $confirmNewPasswd = '';
 $oldPasswdErr = $newPasswdErr = '';
 $response = null;
 
-$photo = empty(getUserImage($_SESSION['user_id'])) ? 'image.png' : getUserImage($_SESSION['user_id']);
+$photo = empty(getUserImage($_SESSION['user_id'])) ? 'images.png' : getUserImage($_SESSION['user_id']);
 
 if (isset($_POST['changePasswd'], $_POST['oldPasswd'], $_POST['newPasswd'], $_POST['confirmNewPasswd'])) {
     $oldPasswd = trim($_POST['oldPasswd']);
@@ -33,12 +33,12 @@ if (isset($_POST['changePasswd'], $_POST['oldPasswd'], $_POST['newPasswd'], $_PO
 }
 
 if (isset($_POST['deletePhoto'])) {
-    $photoPath = './assets/images/' . $photo;
-    if (file_exists($photoPath) && $photo !== 'image.png') {
+    $photoPath = './assets/image/' . $photo;
+    if (file_exists($photoPath) && $photo !== 'images.png') {
         unlink($photoPath);
         $response = deleteUserImage();
         if ($response === true) {
-            $photo = 'image.png';
+            $photo = 'images.png';
             echo '<div class="alert alert-danger" role="alert">
                 Delete Image Success.
            </div>';
@@ -96,7 +96,7 @@ if (isset($_POST['uploadPhoto']) && isset($_FILES['photo'])) {
             <div class="d-flex justify-content-center">
                 <input name="photo" type="file" id="profileUpload" hidden>
                 <label role="button" for="profileUpload">
-                    <img src="./assets/images/emptyuser.png" class="rounded" style="width: 200px; height: 200px; object-fit: cover;" alt="Profile Picture">
+                    <img src="./assets/image/<?php echo $photo?>" class="rounded" style="width: 200px; height: 200px; object-fit: cover;" alt="Profile Picture">
                 </label>
             </div>
             <div class="d-flex justify-content-center">
