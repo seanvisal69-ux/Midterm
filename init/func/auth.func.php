@@ -121,7 +121,7 @@ function insertImage($file)
     }
 
     if (!empty($old_image)) {
-        unlink("./assets/images/" . $old_image);
+        unlink("./assets/image/" . $old_image);
     }
 
     $db->commit();
