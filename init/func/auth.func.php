@@ -104,6 +104,7 @@ function insertImage($file)
     global $db;
     $image_name = $file["photo"]["name"];
     $image_temp = $file["photo"]["tmp_name"];
+    $old_image = loggedInUser()->photo;gg
 
     $db->begin_transaction();
 
@@ -122,6 +123,9 @@ function insertImage($file)
 
     return true;
 }
+     if (!empty($old_image)) {
+        unlink("./assets/images/" . $old_image);
+        }
 function getUserImage($user_id)
 {
     global $db;
